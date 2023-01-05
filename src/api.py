@@ -4,9 +4,11 @@ from enum import Enum
 
 
 def _get_API_keys(path: str = './assets/keys.txt') -> list[str]:
-    """
-    get api keys from txt file
-    each line in the file is a different api key
+    """ Retrieve localy stored api keys
+
+    Get api keys from txt file
+
+    Each line in the file cpntains a different api key
 
     Parameters
     ---
@@ -20,9 +22,10 @@ def _get_API_keys(path: str = './assets/keys.txt') -> list[str]:
 
 
 class _keys(Enum):
+    """ Private enum containing api keys
+
     """
-    enum containing api keys for each api
-    """
+
     COLLECTION = _get_API_keys()
     STOCK = COLLECTION[0]
     NEWS = COLLECTION[1]
@@ -30,8 +33,7 @@ class _keys(Enum):
 
 
 def send_HTTP_request(url: str) -> any:
-    """
-    request json object given url
+    """ Request json object given a url
 
     Parameters
     ---
@@ -49,8 +51,7 @@ def send_HTTP_request(url: str) -> any:
 
 
 def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> any:
-    """
-    retrieve stock data from alphavantage api
+    """ Retrieve stock data from alphavantage api
 
     Parameters
     ---
@@ -69,8 +70,7 @@ def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SE
 
 
 def get_news_headlines(category: str = 'business', country: str = 'us', pagesize: int = 5, apikey: str = "default") -> any:
-    """
-    retrieve the latest headlines from newsapi
+    """ Retrieve the latest headlines from newsapi
 
     Parameters
     ---

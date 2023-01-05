@@ -4,7 +4,10 @@ import sys
 
 
 def retrieve(data_category: str, **kwargs) -> any:
-    """
+    """ Wrapper function to get data from various apis
+
+    Retrieves data from various apis given specified key word arguments (kwargs)
+
     Parameters
     ---
     data_category : str, required
@@ -12,12 +15,13 @@ def retrieve(data_category: str, **kwargs) -> any:
         either 'news' or 'stock'
     
     **kwargs
-        arguments for the http request (excluding apikey)
+        arguments for the http request (excluding api keys)
     
     Return
     ---
     json object (dictionary)
     """
+
     match (data_category.lower()):
         case "stock":
             return get_stock_data(**kwargs)
