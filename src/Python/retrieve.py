@@ -8,8 +8,8 @@ from enum import Enum
 
 
 class _paths(Enum):
-    NEWS = '../data/news.csv'
-    STOCK = '../data/stock.txt'
+    NEWS = '../storage/data/news.csv'
+    STOCK = '../storage/data/stock.txt'
 
 
 def retrieve(data_category: str, **kwargs) -> dict:
