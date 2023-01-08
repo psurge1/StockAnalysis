@@ -1,6 +1,9 @@
 import utils.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,7 +19,7 @@ public class Main
     {
         // generateDimensions();
         // establish();
-        Chart c = new Chart();
+        // Chart c = new Chart();
     }
 
     Main(int w, int h)
@@ -69,8 +72,39 @@ public class Main
 
     public static void main(String[] args) throws OverflowException, OutOfRangeException, IOException
     {
+        // BELOW CODE WORKS AND MUST BE KEPT
+        // EXECUTE BASH COMMAND TO FILL news.csv WITH NEWS ARTICLES
+        // Runtime.getRuntime().exec(String.format("py Python/retrieve.py %s", "news"));
+        // THIS IS BETTER
+        // CmdExec.exec("py Python/retrieve.py %s", "news");
+
+
+        // String s = MFile.fromPath("../data/news.csv");
+        // System.out.println(s);
+
+        // GET NEWS ITEMS FROM news.csv AND STORE IN NewsItem ARRAY
+        // NewsItem[] newsItems = NewsItem.newsItemsFromFile("../data/news.csv");
+        // for (NewsItem item : newsItems)
+        // {
+        //     System.out.println(item);
+        // }
+        
+        // GET CHART FROM PYTHON
+        // HashMap<String, Number> hoip = new HashMap<>();
+        // hoip.put("FROG", 1.5);
+        // hoip.put("HORSE", 3.0);
+        // hoip.put("DRAGONIAN BEAST", 4.5);
+        // hoip.put("LEOPARD FLYER", 10.0);
+        // Chart c = Chart.chartFromKwargs(hoip);
+
+        // EXAMPLE CODE TO PRINT OUTPUT OF COMMAND TO CONSOLE
+        // Process p = CmdExec.exec("py Python/retrieve.py %s", "news");
+        // BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        // String ret = in.readLine();
+        // System.out.println("D: " + ret);
+
         // new Main(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
-        new Main();
+        // new Main();
 
         // Stock c = new Stock("AAPL", 0, "Apple Inc.", "Tech");
         
