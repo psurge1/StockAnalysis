@@ -32,7 +32,7 @@ class _keys(Enum):
 
 
 
-def send_HTTP_request(url: str) -> any:
+def send_HTTP_request(url: str) -> dict:
     """ Request json object given a url
 
     Parameters
@@ -42,7 +42,7 @@ def send_HTTP_request(url: str) -> any:
     
     Return
     ---
-    json object
+    json object : dict
     """
 
     response = requests.get(url)
@@ -50,7 +50,7 @@ def send_HTTP_request(url: str) -> any:
     return data
 
 
-def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> any:
+def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> dict:
     """ Retrieve stock data from alphavantage api
 
     Parameters
@@ -62,6 +62,10 @@ def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SE
     function : str, optional
 
     apikey : str, optional
+    
+    Return
+    ---
+    json object : dict
     """
 
     apikey = _keys.STOCK.value if apikey == "default" else apikey
@@ -69,7 +73,7 @@ def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SE
     return data
 
 
-def get_news_headlines(category: str = 'business', country: str = 'us', pagesize: int = 5, apikey: str = "default") -> any:
+def get_news_headlines(category: str = 'business', country: str = 'us', pagesize: int = 5, apikey: str = "default") -> dict:
     """ Retrieve the latest headlines from newsapi
 
     Parameters
@@ -89,6 +93,10 @@ def get_news_headlines(category: str = 'business', country: str = 'us', pagesize
     pagesize : int, optional
 
     apikey : str, optional
+    
+    Return
+    ---
+    json object : dict
     """
 
     apikey = _keys.NEWS.value if apikey == "default" else apikey
@@ -101,4 +109,4 @@ if __name__ == '__main__':
     # print(ibm5m)
     # news_headlines = get_news_headlines()
     # print(news_headlines)
-    print("api.py")
+    print("Hello World: api.py")
