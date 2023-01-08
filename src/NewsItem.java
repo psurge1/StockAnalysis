@@ -23,7 +23,7 @@ public class NewsItem
     @Override
     public String toString()
     {
-        return String.format("{ SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nURLTOIMAGE: %s \nPUBLISHEDAT: %s \nCONTENT: %s }", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
+        return String.format("{ SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nURLTOIMAGE: %s \nPUBLISHEDATE: %s \nCONTENT: %s }", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
     }
 
 

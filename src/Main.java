@@ -79,11 +79,11 @@ public class Main
         // CmdExec.exec("py Python/retrieve.py %s", "news");
 
 
-        // String s = MFile.fromPath("../data/news.csv");
+        // String s = MFile.fromPath("../storage/data/news.csv");
         // System.out.println(s);
 
         // GET NEWS ITEMS FROM news.csv AND STORE IN NewsItem ARRAY
-        // NewsItem[] newsItems = NewsItem.newsItemsFromFile("../data/news.csv");
+        // NewsItem[] newsItems = NewsItem.newsItemsFromFile("../storage/data/news.csv");
         // for (NewsItem item : newsItems)
         // {
         //     System.out.println(item);

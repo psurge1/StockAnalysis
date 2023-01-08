@@ -71,7 +71,7 @@ public class Chart extends ElementD
 
     public static Chart chartFromKwargs(HashMap<String, Number> hp)
     {
-        return chartFromKwargs("./assets/diversitypie.png", hp);
+        return chartFromKwargs("../storage/diversitypie.png", hp);
     }
 
     public static Chart chartFromKwargs(String path, HashMap<String, Number> hp)
@@ -100,7 +100,7 @@ public class Chart extends ElementD
         // System.out.println();
         
         // EXAMPLE BASH COMMAND
-        // py Python/plot.py "./assets/diversitypie.png" FROG=1.5 HORSE=3.0 "DRAGONIAN BEAST"=4.5 "LEOPARD FLYER"=10
+        // py Python/plot.py "../storage/diversitypie.png" FROG=1.5 HORSE=3.0 "DRAGONIAN BEAST"=4.5 "LEOPARD FLYER"=10
 
         return new Chart(path);
     }
