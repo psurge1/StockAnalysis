@@ -2,51 +2,51 @@
 
 public class ElementD extends Element
 {
-    private int w, h;
+    private int x, y;
     public ElementD()
     {
         super();
-        w = 0;
-        h = 0;
+        x = 0;
+        y = 0;
     }
 
-    public ElementD(int x, int y)
+    public ElementD(int w, int h)
     {
-        super(x, y);
-        w = 0;
-        h = 0;
+        super(w, h);
+        x = 0;
+        y = 0;
     }
 
-    public ElementD(int x, int y, int w, int h)
+    public ElementD(int w, int h, int x, int y)
     {
-        super(x, y);
-        this.w = w;
-        this.h = h;
+        super(w, h);
+        this.x = x;
+        this.y = y;
     }
 
-    public int getW()
+    public int getX()
     {
-        return w;
+        return x;
     }
 
-    public int getH()
+    public int getY()
     {
-        return h;
+        return y;
     }
 
-    public void setWH(int w, int h)
+    public void setXY(int x, int y)
     {
-        this.w = w;
-        this.h = h;
+        this.x = x;
+        this.y = y;
     }
 
-    public void setW(int w)
+    public void setX(int x)
     {
-        this.w = w;
+        this.x = x;
     }
 
-    public void setH(int h)
+    public void setY(int y)
     {
-        this.h = h;
+        this.y = y;
     }
 }

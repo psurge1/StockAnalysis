@@ -17,6 +17,7 @@ public class Chart extends ElementD
     private String path_to_img;
     private BufferedImage chartImage;
 
+    // CONSTRUCTORS
     public Chart(String path)
     {
         super();
@@ -33,7 +34,7 @@ public class Chart extends ElementD
 
     public Chart(String path, int w, int h)
     {
-        this.setWH(w, h);
+        super(w, h);
 
         path_to_img = path;
         try
@@ -49,7 +50,8 @@ public class Chart extends ElementD
 
     public Chart(String path, int w, int h, int x, int y)
     {
-        super(x, y, w, h);
+        super(w, h, x, y);
+
         path_to_img = path;
         try
         {
@@ -62,6 +64,7 @@ public class Chart extends ElementD
     }
     
 
+    // METHODS
     @Override
     public void paintComponent(Graphics g)
     {
@@ -69,6 +72,7 @@ public class Chart extends ElementD
         g.drawImage(chartImage, getX(), getY(), this);
     }
 
+    // FACTORY METHODS
     public static Chart chartFromKwargs(HashMap<String, Number> hp)
     {
         return chartFromKwargs("../storage/diversitypie.png", hp);
@@ -89,18 +93,10 @@ public class Chart extends ElementD
         // EXAMPLE ARGS
         // args = {"\"FROG\"=1.5", "\"HORSE\"=3.0", "\"DRAGONIAN BEAST\"=4.5", "\"LEOPARD FLYER\"=10"};
         
-        CmdExec.exec(cmd, args);
-        
-        // TESTING
-        // System.out.println(cmd);
-        // for (Object o : args)
-        // {
-        //     System.out.print(o + " ");
-        // }
-        // System.out.println();
-        
         // EXAMPLE BASH COMMAND
         // py Python/plot.py "../storage/diversitypie.png" FROG=1.5 HORSE=3.0 "DRAGONIAN BEAST"=4.5 "LEOPARD FLYER"=10
+
+        CmdExec.exec(cmd, args);
 
         return new Chart(path);
     }

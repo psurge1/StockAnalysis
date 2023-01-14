@@ -3,75 +3,19 @@ import utils.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
+
 import java.awt.*;
 
 public class Main
 {
-    int width, height;
-    JFrame frame = new JFrame();
-    JPanel panel = new JPanel();
-    Main()
-    {
-        // generateDimensions();
-        // establish();
-        // Chart c = new Chart();
-    }
-
-    Main(int w, int h)
-    {
-        establish(w, h);
-    }
-
-    /**
-     * 
-     * generateDimensions uses the screen width and height to produce proportional width and heigh parameters for the GUI
-     */
-    private void generateDimensions()
-    {
-        // Dimension sc = Toolkit.getDefaultToolkit().getScreenSize();
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        width = gd.getDisplayMode().getWidth();
-        height = gd.getDisplayMode().getHeight();
-    }
-
-    private void establish()
-    {
-        establish(width / 2, height / 2);
-    }
-
-    
-    /**
-     * 
-     * establish establishes a GUI window with width w and height h
-     * @param w pixel width
-     * @param h pixel height
-     */
-    private void establish(int w, int h)
-    {
-        System.out.printf("%d %d", w, h);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, h, w));
-        panel.setLayout(new GridLayout());
-
-        frame.add(panel, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("");
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-
-
-
-
-
-
-    public static void main(String[] args) throws OverflowException, OutOfRangeException, IOException
-    {
+    // public static void main(String[] args) throws OverflowException, OutOfRangeException
+    // {
         // BELOW CODE WORKS AND MUST BE KEPT
         // EXECUTE BASH COMMAND TO FILL news.csv WITH NEWS ARTICLES
         // Runtime.getRuntime().exec(String.format("py Python/retrieve.py %s", "news"));
@@ -146,7 +90,64 @@ public class Main
         //     vd = p.evaluate(xV[i]);
         //     System.out.printf("--- (%.0f) %f == %f %b\n", xV[i], vd, yV[i], vd == yV[i]); // ERROR SHOULD BE TRUE
         // }
+    // }
+
+
+
+
+
+    int width, height;
+    JFrame frame = new JFrame();
+    JPanel panel = new JPanel();
+    Main()
+    {
+        // generateDimensions();
+        // establish();
+        // Chart c = new Chart();
     }
+
+    Main(int w, int h)
+    {
+        establish(w, h);
+    }
+
+    /**
+     * 
+     * generateDimensions uses the screen width and height to produce proportional width and heigh parameters for the GUI
+     */
+    private void generateDimensions()
+    {
+        // Dimension sc = Toolkit.getDefaultToolkit().getScreenSize();
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        width = gd.getDisplayMode().getWidth();
+        height = gd.getDisplayMode().getHeight();
+    }
+
+    private void establish()
+    {
+        establish(width / 2, height / 2);
+    }
+
+    
+    /**
+     * 
+     * establish establishes a GUI window with width w and height h
+     * @param w pixel width
+     * @param h pixel height
+     */
+    private void establish(int w, int h)
+    {
+        System.out.printf("%d %d", w, h);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, h, w));
+        panel.setLayout(new GridLayout());
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("");
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 
 
 

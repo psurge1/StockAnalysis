@@ -3,42 +3,42 @@ import javax.swing.JPanel;
 
 public class Element extends JPanel
 {
-    private int x, y;
+    private int w, h;
     public Element()
     {
-        x = 0;
-        y = 0;
+        w = 0;
+        h = 0;
     }
 
-    public Element(int x, int y)
+    public Element(int w, int h)
     {
-        this.x = x;
-        this.y = y;
+        this.w = w;
+        this.h = h;
     }
 
-    public int getX()
+    public int getW()
     {
-        return x;
+        return w;
     }
 
-    public int getY()
+    public int getH()
     {
-        return y;
+        return h;
     }
 
-    public void setXY(int x, int y)
+    public void setXY(int w, int h)
     {
-        this.x = x;
-        this.y = y;
+        this.w = w;
+        this.h = h;
     }
     
-    public void setX(int x)
+    public void setW(int w)
     {
-        this.x = x;
+        this.w = w;
     }
 
-    public void setY(int y)
+    public void setH(int h)
     {
-        this.y = y;
+        this.h = h;
     }
 }

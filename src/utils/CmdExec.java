@@ -8,7 +8,42 @@ public class CmdExec {
         String s = String.format(cmdAndFmt, args);
         try
         {
-            return Runtime.getRuntime().exec(s);
+            Process p = Runtime.getRuntime().exec(s);
+            try
+            {
+                p.waitFor();
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println(e);
+            }
+            return p;
+        }
+        catch (IOException e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static Process exec(String cmdAndFmt, boolean wait, Object ... args)
+    {
+        String s = String.format(cmdAndFmt, args);
+        try
+        {
+            Process p = Runtime.getRuntime().exec(s);
+            if (wait)
+            {
+                try
+                {
+                    p.waitFor();
+                }
+                catch (InterruptedException e)
+                {
+                    System.out.println(e);
+                }
+            }
+            return p;
         }
         catch (IOException e)
         {
