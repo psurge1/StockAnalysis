@@ -1,19 +1,17 @@
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 
-public class Element extends JPanel
+public class Element extends JComponent
 {
     private int w, h;
     public Element()
     {
-        w = 0;
-        h = 0;
+        setWH(0, 0);
     }
 
     public Element(int w, int h)
     {
-        this.w = w;
-        this.h = h;
+        setWH(w, h);
     }
 
     public int getW()
@@ -26,19 +24,20 @@ public class Element extends JPanel
         return h;
     }
 
-    public void setXY(int w, int h)
+    public void setWH(int w, int h)
     {
         this.w = w;
         this.h = h;
+        this.setSize(w, h);
     }
     
     public void setW(int w)
     {
-        this.w = w;
+        setWH(w, getH());
     }
 
     public void setH(int h)
     {
-        this.h = h;
+        setWH(getW(), h);
     }
 }

@@ -3,25 +3,32 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
-mpl.rcParams['figure.dpi'] = 150
-mpl.rcParams['figure.figsize'] = (3, 3)
-
 
 
 def gen_py_chart(path_to_img: str, **kwargs):
     labels = kwargs.keys()
     values = list(map(float, kwargs.values()))
+
+    s = sum(values)
+    # dictionary of "percentage (3 decimal places)" : "label" pairs
+    reverse_dict = dict(zip(map(lambda v: round(v, 3), map(lambda val: round(100 * val/s, 3), values)), labels))
+
     explode = [0.01 for _ in labels]
 
     # autopct is changeable to determine the format of the pie chart labels
-    plt.pie(values, explode=explode, labels=labels, autopct="%1.1f%%", startangle=90)
+    # autopct_option1 = "%1.1f%%"
+    autopct_option2 = lambda pct: reverse_dict[round(pct, 3)]
+    plt.pie(values, explode=explode, autopct=autopct_option2, startangle=90, textprops={'fontsize': 6})
+    # plt.pie(values, explode=explode, labels=labels, autopct=autopct_option1 pct: reverse_dict[round(pct, 3)], startangle=90)
     plt.axis('equal')
     # plt.show()
     plt.savefig(path_to_img, transparent=True)
 
 
 if __name__ == '__main__':
-    data = gen_py_chart(sys.argv[1], **dict(arg.split('=') for arg in sys.argv[2:]))
+    mpl.rcParams['figure.dpi'] = 150
+    mpl.rcParams['figure.figsize'] = (float(sys.argv[2]), float(sys.argv[3]))
+    data = gen_py_chart(sys.argv[1], **dict(arg.split('=') for arg in sys.argv[4:]))
     # Example cmd:
     #   py Python/plot.py [path] [industry]=[number] [industry2]=[number2] ... (etc)
     #   py Python/plot.py "../storage/diversitypie.png" Technology=1 "Oil and gas"=2 Pharmacy=1.5 ... (etc)

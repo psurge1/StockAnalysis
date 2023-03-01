@@ -1,7 +1,13 @@
+import utils.CmdExec;
 import utils.MFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+// import java.io.InputStream;
+// import java.util.Scanner;
+
+
 
 
 public class NewsItem
@@ -20,6 +26,13 @@ public class NewsItem
     }
 
 
+    public String stringValue()
+    {
+        // return String.format("SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nPUBLISHEDATE: %s", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
+        return String.format("SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nURLTOIMAGE: %s \nPUBLISHEDATE: %s \nCONTENT: %s", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
+    }
+
+
     @Override
     public String toString()
     {
@@ -27,6 +40,24 @@ public class NewsItem
     }
 
 
+
+    
+    public static void queryAPI()
+    {
+        // py Python/retrieve.py news category=[String, optional] country=[String, optional] pagesize=[String, optional] apikey=[String, optional]
+        String command = "py Python/retrieve.py news";
+
+        CmdExec.exec(command + "%s", "").getInputStream();
+
+        // InputStream c = CmdExec.exec(command + "%s", "").getInputStream();
+        
+        // Scanner s = new Scanner(c).useDelimiter("\\A");
+        // String result = s.hasNext() ? s.next() : "";
+        // s.close();
+
+        // System.out.println(result);
+
+    }
 
 
     public static NewsItem[] newsItemsFromFile(String path)
@@ -43,21 +74,22 @@ public class NewsItem
             return null;
         }
         String[] articles = data.split("\n");
-        for (String article : articles)
+        for (int i = 1; i < articles.length; ++i)
         {
-            String[] articleArray = article.split(",");
+            // System.out.println(articles[i]);
+            String[] articleArray = articles[i].split("\",\"");
             nl.add(new NewsItem(
-                articleArray[0],
+                articleArray[0].substring(1),
                 articleArray[1],
                 articleArray[2],
                 articleArray[3],
                 articleArray[4],
                 articleArray[5],
                 articleArray[6],
-                articleArray[7]
+                articleArray[7].substring(0, articleArray[7].length() - 2)
             ));
         }
-
+        nl.remove(0);
         return nl.toArray(new NewsItem[0]);
     }
 }

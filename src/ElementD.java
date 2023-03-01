@@ -6,22 +6,19 @@ public class ElementD extends Element
     public ElementD()
     {
         super();
-        x = 0;
-        y = 0;
+        setXY(0, 0);
     }
 
     public ElementD(int w, int h)
     {
         super(w, h);
-        x = 0;
-        y = 0;
+        setXY(0, 0);
     }
 
     public ElementD(int w, int h, int x, int y)
     {
         super(w, h);
-        this.x = x;
-        this.y = y;
+        setXY(x, y);
     }
 
     public int getX()
@@ -38,15 +35,16 @@ public class ElementD extends Element
     {
         this.x = x;
         this.y = y;
+        setLocation(x, y);
     }
 
     public void setX(int x)
     {
-        this.x = x;
+        setXY(x, getY());
     }
 
     public void setY(int y)
     {
-        this.y = y;
+        setXY(getX(), y);
     }
 }

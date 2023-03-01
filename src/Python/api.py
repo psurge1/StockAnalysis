@@ -50,7 +50,7 @@ def send_HTTP_request(url: str) -> dict:
     return data
 
 
-def get_stock_data(symbol: str, interval: str = '5min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> dict:
+def get_stock_data(symbol: str, interval: str = '60min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> dict:
     """ Retrieve stock data from alphavantage api
 
     Parameters

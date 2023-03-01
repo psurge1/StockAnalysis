@@ -16,8 +16,8 @@
 
 cd src
 
-javac Main.java
-java Main
+javac Gui.java
+java Gui
 
 ./janitor.bash
 

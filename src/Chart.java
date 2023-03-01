@@ -1,12 +1,13 @@
 import java.util.HashMap;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import utils.CmdExec;
 
@@ -16,6 +17,7 @@ public class Chart extends ElementD
 {
     private String path_to_img;
     private BufferedImage chartImage;
+    private JLabel imageLabel;
 
     // CONSTRUCTORS
     public Chart(String path)
@@ -63,27 +65,50 @@ public class Chart extends ElementD
         }
     }
     
+    public void setLabel()
+    {
+        imageLabel = new JLabel(new ImageIcon(chartImage));
+    }
+
+    public JLabel getJLabel()
+    {
+        return imageLabel;
+    }
+
+    public BufferedImage getImage()
+    {
+        return chartImage;
+    }
 
     // METHODS
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(chartImage, getX(), getY(), this);
-    }
+    // @Override
+    // public void paintComponent(Graphics g)
+    // {
+    //     super.paintComponent(g);
+    //     g.drawImage(chartImage, getX(), getY(), this);
+    // }
 
     // FACTORY METHODS
     public static Chart chartFromKwargs(HashMap<String, Number> hp)
     {
-        return chartFromKwargs("../storage/diversitypie.png", hp);
+        return chartFromKwargs("../storage/diversitypie.png", 2, 2, hp);
+    }
+
+    public static Chart chartFromKwargs(double w, double h, HashMap<String, Number> hp)
+    {
+        return chartFromKwargs("../storage/diversitypie.png", w, h, hp);
     }
 
     public static Chart chartFromKwargs(String path, HashMap<String, Number> hp)
     {
+        return chartFromKwargs(path, 2, 2, hp);
+    }
+
+    public static Chart chartFromKwargs(String path, double w, double h, HashMap<String, Number> hp)
+    {
         Object[] args = new Object[hp.size()];
         String[] keySet = hp.keySet().toArray(new String[0]);
-
-        String cmd = "py Python/plot.py \"" + path + "\"";
+        String cmd = "py Python/plot.py \"" + path + "\" \"" + w + "\" \"" + h + "\"";
         for (int i = 0, n = hp.size(); i < n; ++i)
         {
             cmd += " %s";
