@@ -14,11 +14,13 @@
 
 # java -jar Main.jar
 
-cd src
+# cd src
 
-javac Gui.java
-java Gui
+# javac Gui.java
+# java Gui "/c/Users/suraj/Code/StockAnalysis"
 
-./janitor.bash
+# ./janitor.bash
 
-cd ..
+# cd ..
+javac -cp src/main -d bin src/main/Gui.java
+java -cp bin Gui

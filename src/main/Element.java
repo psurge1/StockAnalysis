@@ -1,6 +1,7 @@
 import javax.swing.JComponent;
 
 
+
 public class Element extends JComponent
 {
     private int w, h;
@@ -28,6 +29,8 @@ public class Element extends JComponent
     {
         this.w = w;
         this.h = h;
+
+        // for certain JComponents
         this.setSize(w, h);
     }
     

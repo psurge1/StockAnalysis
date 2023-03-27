@@ -1,14 +1,12 @@
-import utils.CmdExec;
-
 public class StockPage {
-    private static String metaDataPath = "../storage/data/metadata.txt",
-    latestStockPath = "../storage/data/lateststock.txt",
-    stockGraphPath = "../storage/stockgraph.png";
-   
+    private static String metaDataPath = FilePaths.METADATA.value,
+        latestStockPath = FilePaths.LATESTSTOCK.value,
+        stockGraphPath = FilePaths.STOCKGRAPH.value;
+    
     public static void exec(String symbol)
     {
         String uppercaseSymbol = symbol.toUpperCase();
-        CmdExec.exec("py Python/retrieve.py stock %s", "symbol=\"" + uppercaseSymbol + "\"");
+        CmdExec.exec("py " + FilePaths.PYTHON.value + "retrieve.py stock symbol=\"%s\"", uppercaseSymbol);
     }
 
     public static String getMetaDataPath()

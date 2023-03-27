@@ -1,0 +1,17 @@
+1. symbol: SNDL
+2. name: SNDL Inc
+3. type: Equity
+4. region: United States
+5. marketopen: 09:30
+6. marketclose: 16:00
+7. timezone: UTC-04
+8. currency: USD
+
+--
+Volatility
+beta (5day): 0.053278447056406025
+variance: 0.00022051995803867895
+standard deviation: 0.014849914411830088
+
+Start Date: 2023-03-16 13:00:00
+End Date:  2023-03-24 20:00:00

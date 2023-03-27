@@ -1,5 +1,3 @@
-
-
 public class ElementD extends Element
 {
     private int x, y;
@@ -35,6 +33,8 @@ public class ElementD extends Element
     {
         this.x = x;
         this.y = y;
+        
+        // for certain JComponents
         setLocation(x, y);
     }
 

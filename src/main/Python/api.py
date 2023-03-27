@@ -1,9 +1,11 @@
+from paths import paths
+
 import requests
 from enum import Enum
 
 
 
-def _get_API_keys(path: str = './assets/keys.txt') -> list[str]:
+def _get_API_keys(path: str = paths.value("KEYS")) -> list[str]:
     """ Retrieve localy stored api keys
 
     Get api keys from txt file
@@ -17,7 +19,7 @@ def _get_API_keys(path: str = './assets/keys.txt') -> list[str]:
     """
 
     with open(path, 'r', encoding = 'utf8') as f:
-        k = f.readlines()
+        k: list[str] = f.readlines()
     return k
 
 
@@ -32,7 +34,7 @@ class _keys(Enum):
 
 
 
-def send_HTTP_request(url: str) -> dict:
+def send_HTTP_request(url: str) -> dict[str, str]:
     """ Request json object given a url
 
     Parameters
@@ -46,11 +48,11 @@ def send_HTTP_request(url: str) -> dict:
     """
 
     response = requests.get(url)
-    data = response.json()
+    data: dict[str, str] = response.json()
     return data
 
 
-def get_stock_data(symbol: str, interval: str = '60min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> dict:
+def get_stock_data(symbol: str, interval: str = '60min', function: str = 'TIME_SERIES_INTRADAY', apikey: str = "default") -> dict[str, str]:
     """ Retrieve stock data from alphavantage api
 
     Parameters
@@ -68,12 +70,31 @@ def get_stock_data(symbol: str, interval: str = '60min', function: str = 'TIME_S
     json object : dict
     """
 
-    apikey = _keys.STOCK.value if apikey == "default" else apikey
-    data = send_HTTP_request(f'https://www.alphavantage.co/query?function={function}&symbol={symbol}&interval={interval}&apikey={apikey}')
+    apikey: str = _keys.STOCK.value if apikey == "default" else apikey
+    data: dict[str, str] = send_HTTP_request(f'https://www.alphavantage.co/query?function={function}&symbol={symbol}&interval={interval}&apikey={apikey}')
     return data
 
 
-def get_news_headlines(category: str = 'business', country: str = 'us', pagesize: int = 5, apikey: str = "default") -> dict:
+def get_stock_info(symbol: str, apikey: str = "default") -> dict[str, str]:
+    """ Retrieve stock company name and description from alphavantage api
+
+    Parameters
+    ---
+    symbol : str, required
+
+    apikey : str, optional
+    
+    Return
+    ---
+    json object : dict
+    """
+
+    apikey: str = _keys.STOCK.value if apikey == "default" else apikey
+    data: dict[str, str] = send_HTTP_request(f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={symbol}&apikey={apikey}')
+    return data
+
+
+def get_news_headlines(category: str = 'business', country: str = 'us', pagesize: int = 5, apikey: str = "default") -> dict[str, str]:
     """ Retrieve the latest headlines from newsapi
 
     Parameters
@@ -99,13 +120,14 @@ def get_news_headlines(category: str = 'business', country: str = 'us', pagesize
     json object : dict
     """
 
-    apikey = _keys.NEWS.value if apikey == "default" else apikey
-    data = send_HTTP_request(f'https://newsapi.org/v2/top-headlines?country={country}&category={category}&pageSize={pagesize}&apiKey={apikey}')
+    apikey: str = _keys.NEWS.value if apikey == "default" else apikey
+    data: dict[str, str] = send_HTTP_request(f'https://newsapi.org/v2/top-headlines?country={country}&category={category}&pageSize={pagesize}&apiKey={apikey}')
     return data
 
 
+
 if __name__ == '__main__':
-    # ibm5m = get_stock_data(keys[0], 'AAPL', '5min')
+    # ibm5m: dict[str, str] = get_stock_data(keys[0], 'AAPL', '5min')
     # print(ibm5m)
     # news_headlines = get_news_headlines()
     # print(news_headlines)

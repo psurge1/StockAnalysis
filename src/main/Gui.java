@@ -6,9 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
-import java.awt.Image;
-import java.io.IOException;
 import java.awt.event.ItemEvent;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,41 +21,44 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import utils.MFile;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.function.Function;
+
 
 
 public class Gui extends Element implements ActionListener, ItemListener
 {
     // MISC DATA STRUCTURES
-    private Portfolio p;
+    private Portfolio mainPortfolio;
 
     private NewsItem[] items;
 
-    
-    final static String HOME = "Home";
-    final static String PORTFOLIO = "Portfolio";
-    final static String ADDSTOCK = "Add Stock";
-    final static String EDITSTOCK = "Edit Stock";
-    final static String STOCKSEARCH = "Stock Search";
+    private final static String HOME = "Home";
+    private final static String ADDSTOCK = "Add Stock";
+    private final static String EDITSTOCK = "Edit Stock";
+    private final static String STOCKSEARCH = "Stock Search";
 
-    JPanel homeCard;
-    JPanel portfolioCard;
-    JPanel astockCard;
-    JPanel estockCard;
-    JPanel sstockCard;
-
+    private JPanel homeCard;
+    private JPanel astockCard;
+    private JPanel estockCard;
+    private JPanel sstockCard;
 
     // GUI DATA STRUCTURES
+    private static ImageIcon logo = new ImageIcon(FilePaths.LOGO.value);
 
     private static int standardUnit = 40;
 
     private JPanel panel;
     private Chart chart;
 
+    //  Home Page
+    private JButton clearPortfolio;
+    private JButton savePortfolio;
+    private JButton loadPortfolio;
 
-    //  Main Menu
     private JLabel currentPortfolio;
     private JLabel pieChart;
     private JTextArea stockArea;
@@ -69,12 +71,6 @@ public class Gui extends Element implements ActionListener, ItemListener
     private JLabel latestHeadlines;
     private JTextArea headlines;
     private JScrollPane headlineScroll;
-    
-
-    // Portfolio Page
-    private JLabel Pportfolio;
-    private JScrollPane PstocksList;
-
 
     // Edit Stock Page
     private JLabel EeditStock;
@@ -83,7 +79,6 @@ public class Gui extends Element implements ActionListener, ItemListener
     private JLabel EcountLabel;
     private JTextField Ecount;
     private JButton Eedit;
-
 
     // Add Stock Page
     private JLabel AaddStock;
@@ -104,49 +99,61 @@ public class Gui extends Element implements ActionListener, ItemListener
     private JRadioButton AsectorMaterials;
     private JRadioButton AsectorRealestate;
     private JRadioButton AsectorUtilities;
-    JRadioButton[] radioButtonS;
-
+    private JRadioButton[] radioButtonS;
 
     // Stock Page
     private JButton search;
     private JTextField searchBar;
     
     private JLabel Ssymbol;
-    private JLabel Sstock; // Stock Graph
-    private JTextArea SvolumeVolatility;
+    private JLabel SstockGraphLabel; // Stock Graph
+    private JTextArea SmetaDataInfo;
 
-    private JTextArea ScompanyInfo;
+    private JTextArea ScompanyDescriptionInfo;
+    private JTextArea ScompanyVolatilityInfo;
+    private JTextArea SlatestInfo;
     private JLabel SapplyModel;
-    private JButton perlinNoise;
+    private JTextArea standardMovingAverageValue;
+    private JButton standardMovingAverage;
     private JButton tennisBall;
 
-    
-    // private static ImageIcon logo;
+
+    /**
+     * Constructor
+     */
     public Gui()
     {
-        // GUI initial setup START
+        // GUI initial setup
         panel = new JPanel(new CardLayout());
+        mainPortfolio = new Portfolio();
 
-        p = new Portfolio();
-        // GUI initial setup END
-
+        // retrieve data from News API request
         NewsItem.queryAPI();
-        items = NewsItem.newsItemsFromFile("../storage/data/news.csv");
+        items = NewsItem.newsItemsFromFile(FilePaths.NEWS.value);
 
+        // instantiate JCardLayout panels
         homeCard        = new JPanel(null);
-        portfolioCard   = new JPanel(null);
         astockCard      = new JPanel(null);
         estockCard      = new JPanel(null);
         sstockCard      = new JPanel(null);
     }
 
+    /**
+     * Initializes the JFrame and instantiates a GUI object
+     */
     private static void runGUI() {
-        JFrame frame = new JFrame("Stock Management");
+        // initialize JFrame
+        JFrame frame = new JFrame("Stock Analysis and Management");
 
+        // set GUI icon
+        frame.setIconImage(logo.getImage());
+
+        // generate frame dimensions from screen dimensions
         int[] wh = Gui.generateDimensions();
         System.out.println(wh[0] + " " + wh[1]);
-        
         frame.setSize(wh[0], wh[1]);
+
+        // set frame close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // initialize GUI
@@ -154,33 +161,34 @@ public class Gui extends Element implements ActionListener, ItemListener
         g.setWH(wh[0], wh[1]);
         g.addComponentToPane(frame.getContentPane());
         
-        // GUI final setup START
-        // frame.pack();
+        // GUI final setup
         frame.setVisible(true);
         frame.setResizable(false);
-        // GUI final setup END
     }
 
+
+    /**
+     * Adds navigation (JComboBox) and page Card panels (home, addstock, editstock, stocksearch) to the pane Container argument
+     * @param pane (Container) Component to which all items will be added
+     */
     public void addComponentToPane(Container pane) {
         JPanel comboBoxPane = new JPanel();
-        String comboBoxItems[] = {HOME, PORTFOLIO, ADDSTOCK, EDITSTOCK, STOCKSEARCH};
+        String comboBoxItems[] = {HOME, ADDSTOCK, EDITSTOCK, STOCKSEARCH};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
         comboBoxPane.add(cb);
         
-        // Add content to Card pages
-        mainMenu();
-        portfolioPage();
+        // add content to Card pages
+        homePage();
         addStockPage();
         editStockPage();
         stockPage();
 
         updatePortfolios();
         
-        // Add Card pages to panel
+        // add Card pages to panel
         panel.add(homeCard, HOME);
-        panel.add(portfolioCard, PORTFOLIO);
         panel.add(astockCard, ADDSTOCK);
         panel.add(estockCard, EDITSTOCK);
         panel.add(sstockCard, STOCKSEARCH);
@@ -189,14 +197,31 @@ public class Gui extends Element implements ActionListener, ItemListener
         pane.add(panel, BorderLayout.CENTER);
     }
 
-    public void itemStateChanged(ItemEvent evt) {
-        CardLayout cl = (CardLayout) (panel.getLayout());
-        cl.show(panel, (String) evt.getItem());
-    }
 
-
+    /**
+     * Executes the GUI application
+     * @param args
+     */
     public static void main(String[] args)
     {
+        String absolutePath;
+        try {
+            String localPath = "/Gui.java";
+            File f = new File("Gui.java");
+            String foundPath = f.getAbsolutePath();
+            System.out.println(foundPath);
+            absolutePath = foundPath.substring(0, foundPath.length() - localPath.length());
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+        FilePaths.setAbsolutePath(absolutePath);
+        for (FilePaths c : FilePaths.values())
+        {
+            System.out.println(c.value);
+        }
+        
         // run GUI
         javax.swing.SwingUtilities.invokeLater(new Runnable()
         {
@@ -207,23 +232,35 @@ public class Gui extends Element implements ActionListener, ItemListener
     }
 
 
+    /**
+     * Removes the pie chart and revalidates the "Home" page
+     */
     public void removePieChart()
     {
         try
         {
             homeCard.remove(pieChart);
+            homeCard.revalidate();
         }
-        catch (NullPointerException ex)
+        catch (Exception ex)
         {
-            System.out.println("First Iteration");
+            System.out.println("Pie Chart Removal Exception: No Pie Chart Exists");
         }
     }
 
 
+    /**
+     * Generates a pie chart from HashMap
+     * @param items (HashMap<String, Number>) String categories and their related Number size
+     * @param x (int) location x
+     * @param y (int) location y
+     * @param w (int) pie chart width
+     * @param h (int) pie chart height
+     */
     public void pieChartGen(HashMap<String, Number> items, int x, int y, int w, int h)
     {
         removePieChart();
-        chart = Chart.chartFromKwargs("../storage/diversitypie.png", 2, 2, items);
+        chart = Chart.chartFromKwargs(FilePaths.PIECHART.value, 2, 2, items);
         chart.setXY(x, y);
         chart.setWH(w, h);
 
@@ -231,40 +268,58 @@ public class Gui extends Element implements ActionListener, ItemListener
         pieChart = chart.getJLabel();
         pieChart.setBounds(chart.getX(), chart.getY(), chart.getWidth(), chart.getH());
         homeCard.add(pieChart);
+        homeCard.revalidate();
     }
 
 
+    /**
+     * Generates a pie chart to reflect the industry diversity of the portfolio
+     */
     public void pieChartGen()
     {
         int currentY = standardUnit * 2;
         int currentHeight = getW() / 3;
-        pieChartGen(Portfolio.countIndustry(p), 0, currentY - standardUnit, currentHeight, currentHeight);
+        pieChartGen(Portfolio.countIndustry(mainPortfolio), 0, currentY - standardUnit, currentHeight, currentHeight);
     }
 
 
+    /**
+     * Resets the stock graph displayed to the image saved on stockgraph.png
+     */
+    public void resetStockGraph()
+    {
+        SstockGraphLabel.setIcon(null);
+        Chart stockGraph = new Chart(StockPage.getStockGraphPath());
+        Image scaledImage = stockGraph.getImage().getScaledInstance(SstockGraphLabel.getWidth(), SstockGraphLabel.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        SstockGraphLabel.setIcon(new ImageIcon(scaledImage));
+    }
+
+
+    /**
+     * Updates the "Main Menu" portfolio display to reflect the elements within the portfolio
+     */
     public void updatePortfolios()
     {
         // Home Page Stocks
         String stockAreaText = "";
 
-        // Portfolio Page Stocks
-
-        String[] tickers = p.getAllStockTickers();
+        String[] tickers = mainPortfolio.getAllStockTickers();
         for (int i = 0, n = tickers.length; i < n; ++i)
         {
-            Stock temp = p.getStock(tickers[i]);
+            Stock temp = mainPortfolio.getStock(tickers[i]);
 
             // Home Page Stocks
             stockAreaText += tickers[i] + ": " + temp.getCount() + ", " + temp.getIndustry() + "\n";
-
-            // Portfolio Page Stocks
         }
         // Home Page Stocks
         stockArea.setText(stockAreaText);
     }
 
 
-    public void mainMenu()
+    /**
+     * Adds JComponents to the "Home" page
+     */
+    public void homePage()
     {
         int boundsWidth = getW() / 2;
 
@@ -276,10 +331,10 @@ public class Gui extends Element implements ActionListener, ItemListener
         currentPortfolio.setBounds(0, currentY, boundsWidth, currentHeight);
         homeCard.add(currentPortfolio);
 
-        currentY += currentHeight;
-        currentHeight = getW() / 3;
+        currentY = getW() / 3;
+        currentHeight = getW() * 9 / 40;
 
-        if (p.getSize() > 0)
+        if (mainPortfolio.getSize() > 0)
         {
             pieChartGen();
         }
@@ -290,9 +345,27 @@ public class Gui extends Element implements ActionListener, ItemListener
 
         stockArea = new JTextArea();
         stocks = new JScrollPane(stockArea);
-        stocks.setBounds(0, currentHeight, boundsWidth, getH() - currentHeight - currentY);
+        stocks.setBounds(0, currentY, boundsWidth, currentHeight);
         stockArea.setEditable(false);
         homeCard.add(stocks);
+
+        currentY += currentHeight;
+
+        int localBWidth = standardUnit * 2;
+        clearPortfolio = new JButton("Clear");
+        clearPortfolio.setBounds(0, currentY, localBWidth, standardUnit);
+        clearPortfolio.addActionListener(this);
+        homeCard.add(clearPortfolio);
+
+        savePortfolio = new JButton("Save");
+        savePortfolio.setBounds(localBWidth + 2, currentY, localBWidth, standardUnit);
+        savePortfolio.addActionListener(this);
+        homeCard.add(savePortfolio);
+
+        loadPortfolio = new JButton("Load");
+        loadPortfolio.setBounds(2 * (localBWidth + 2), currentY, localBWidth, standardUnit);
+        loadPortfolio.addActionListener(this);
+        homeCard.add(loadPortfolio);
         
         // Right Half
         currentY = standardUnit;
@@ -319,7 +392,7 @@ public class Gui extends Element implements ActionListener, ItemListener
             "Energy: SLB\n" +
             "Materials: NTR\n" +
             "Real estate: SBAC\n" +
-            "Utilities: PCG\n"
+            "Utilities: PCG"
         );
         recommendedStockList.setLineWrap(true);
         recommendedStockList.setEditable(false);
@@ -344,26 +417,14 @@ public class Gui extends Element implements ActionListener, ItemListener
 
         for (NewsItem item : items)
         {
-            // System.out.println(item);
             headlines.append(item.stringValue() + "\n\n\n");
         }
     }
 
 
-    public void portfolioPage()
-    {
-        int boundsWidth = getW();
-
-        Pportfolio = new JLabel("Portfolio");
-        Pportfolio.setBounds(0, standardUnit, boundsWidth, standardUnit);
-        portfolioCard.add(Pportfolio);
-
-        PstocksList = new JScrollPane();
-        PstocksList.setBounds(0, standardUnit * 2, boundsWidth, getH() - standardUnit * 4);
-        portfolioCard.add(PstocksList);
-    }
-
-
+    /**
+     * Adds JComponents to the "Add Stock" page
+     */
     public void addStockPage()
     {
         int boundsWidth = getW();
@@ -432,6 +493,9 @@ public class Gui extends Element implements ActionListener, ItemListener
     }
 
 
+    /**
+     * Adds JComponents to the "Edit Stock" page
+     */
     public void editStockPage()
     {
         int boundsWidth = getW();
@@ -464,11 +528,12 @@ public class Gui extends Element implements ActionListener, ItemListener
     }
 
 
+    /**
+     * Adds JComponents to the "Stock Search" page
+     */
     public void stockPage()
     {
         int width = getW() / 2;
-
-        // homeBar();
 
         // Top Bar
         searchBar = new JTextField(100);
@@ -492,44 +557,41 @@ public class Gui extends Element implements ActionListener, ItemListener
         currentHeight = (getH() - currentY) / 3;
         System.out.println(currentHeight);
         
-        ScompanyInfo = new JTextArea();
-        ScompanyInfo.setBounds(0, currentY, width, currentHeight);
-        ScompanyInfo.setEditable(false);
-        sstockCard.add(ScompanyInfo);
+        ScompanyDescriptionInfo = new JTextArea();
+        ScompanyDescriptionInfo.setBounds(0, currentY, width / 2 - 2, currentHeight);
+        ScompanyDescriptionInfo.setEditable(false);
+        sstockCard.add(ScompanyDescriptionInfo);
+        
+        ScompanyVolatilityInfo = new JTextArea();
+        ScompanyVolatilityInfo.setBounds(width / 2, currentY, width / 2, currentHeight);
+        ScompanyVolatilityInfo.setEditable(false);
+        sstockCard.add(ScompanyVolatilityInfo);
         
 
         currentY += currentHeight + 2;
+        currentHeight = (int) (0.75 * currentHeight);
 
-        SvolumeVolatility = new JTextArea();
-        SvolumeVolatility.setBounds(0, currentY, width, (int) (1.5 * currentHeight));
-        SvolumeVolatility.setEditable(false);
-        sstockCard.add(SvolumeVolatility);
+        SlatestInfo = new JTextArea();
+        SlatestInfo.setBounds(0, currentY, width, currentHeight);
+        SlatestInfo.setEditable(false);
+        sstockCard.add(SlatestInfo);
 
-        // SvolumeVolatility = new JTextArea();
-        // SvolumeVolatility.setBounds(0, currentY, width, currentHeight);
-        // SvolumeVolatility.setEditable(false);
-        // sstockCard.add(SvolumeVolatility);
+        currentY += currentHeight + 2;
+        
+        SmetaDataInfo = new JTextArea();
+        SmetaDataInfo.setBounds(0, currentY, width, currentHeight);
+        SmetaDataInfo.setEditable(false);
+        sstockCard.add(SmetaDataInfo);
 
-        // currentY += currentHeight + 2;
-
-        // Sdata1 = new JTextArea();
-        // Sdata1.setBounds(0, currentY, width / 2 - 1, currentHeight);
-        // Sdata1.setEditable(false);
-        // sstockCard.add(Sdata1);
-
-        // Sdata2 = new JTextArea();
-        // Sdata2.setBounds(width / 2 + 1, currentY, width / 2 - 1, currentHeight);
-        // Sdata2.setEditable(false);
-        // sstockCard.add(Sdata2);
 
         // Right Side
         width += 2;
         currentY = 2 * standardUnit;
         currentHeight = (getH() - currentY) / 2;
 
-        Sstock = new JLabel(); // Change to stock graph image: Stock Sstock;
-        Sstock.setBounds(width, currentY, width, currentHeight);
-        sstockCard.add(Sstock);
+        SstockGraphLabel = new JLabel(); // Change to stock graph image: Stock Sstock;
+        SstockGraphLabel.setBounds(width, currentY, width, currentHeight);
+        sstockCard.add(SstockGraphLabel);
 
         currentY += currentHeight;
         currentHeight = standardUnit;
@@ -540,11 +602,15 @@ public class Gui extends Element implements ActionListener, ItemListener
 
         currentY += currentHeight;
         currentHeight = (getH() - currentY) / 3;
+
+        standardMovingAverageValue = new JTextArea();
+        standardMovingAverageValue.setBounds(width, currentY, width / 2, currentHeight);
+        sstockCard.add(standardMovingAverageValue);
         
-        perlinNoise = new JButton("Perlin Noise");
-        perlinNoise.setBounds(width, currentY, width, currentHeight);
-        perlinNoise.addActionListener(this);
-        sstockCard.add(perlinNoise);
+        standardMovingAverage = new JButton("Standard Moving Average");
+        standardMovingAverage.setBounds(width * 3 / 2, currentY, width / 2, currentHeight);
+        standardMovingAverage.addActionListener(this);
+        sstockCard.add(standardMovingAverage);
 
         currentY += currentHeight;
 
@@ -555,38 +621,27 @@ public class Gui extends Element implements ActionListener, ItemListener
     }
 
 
+    // OVERRIDEN Interface methods
+    // ItemListener
+    @Override
+    public void itemStateChanged(ItemEvent evt) {
+        CardLayout cl = (CardLayout) (panel.getLayout());
+        cl.show(panel, (String) evt.getItem());
+    }
+
+    // ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
         JButton clickedButton = (JButton) e.getSource();
-        // if (clickedButton == home) // home page
-        // {
-        //     panel.removeAll();
-        //     mainMenu();
-        // }
-        // else if (clickedButton == editPortfolio) // portfolio page
-        // {
-        //     panel.removeAll();
-        //     portfolioPage();
-        // }
-        // else if (clickedButton == PaddStock) // add stock to portfolio page
-        // {
-        //     panel.removeAll();
-        //     addStockPage();
-        // }
         if (clickedButton == Aadd)
         {
             System.out.println("Add Stock");
             String ticker = Asymbol.getText().strip().toUpperCase();
             Asymbol.setText("");
-            double count;
-            try
+            double count = warnAction(Acount.getText(), (String s) -> Double.valueOf(s), -1.0, "Invalid Number");
+            if (count < 0)
             {
-                count = Double.valueOf(Acount.getText());
-            }
-            catch (NumberFormatException ex)
-            {
-                new Warning("Invalid Number");
                 return;
             }
             Acount.setText("");
@@ -604,7 +659,7 @@ public class Gui extends Element implements ActionListener, ItemListener
                 new Warning("Invalid Industry");
                 return;
             }
-            p.addStock(ticker, new Stock(ticker, industry, count));
+            mainPortfolio.addStock(ticker, new Stock(ticker, industry, count));
 
             pieChartGen();
             updatePortfolios();
@@ -614,150 +669,143 @@ public class Gui extends Element implements ActionListener, ItemListener
             System.out.println("Edit Stock");
             String ticker = Esymbol.getText().strip().toUpperCase();
             Esymbol.setText("");
-            double count;
-            try
+            double count = (double) warnAction(Ecount.getText(), (String s) -> Double.valueOf(s), -1.0, "Invalid Number");
+            if (count < 0)
             {
-                count = Double.valueOf(Ecount.getText());
-            }
-            catch (NumberFormatException ex)
-            {
-                new Warning("Invalid Number");
                 return;
             }
             Ecount.setText("");
-            p.editStock(ticker, count);
+            mainPortfolio.editStock(ticker, count);
 
             pieChartGen();
             updatePortfolios();
         }
         else if (clickedButton == search)
         {
-            // System.out.println("Search");
             String symbol = searchBar.getText().strip().toUpperCase();
             StockPage.exec(symbol);
-            String metaData, latestStock;
+            String[] descriptionVolatilityArr;
+            String descriptionString, volatilityString, metaDataString, latestStockString;
             try
             {
-                metaData = MFile.fromPath(StockPage.getMetaDataPath());
-                latestStock = MFile.fromPath(StockPage.getLatestStockPath());
-                // stockGraphPath = MFile.fromPath(StockPage.getStockGraphPath());
+                descriptionVolatilityArr = MFile.fromPath(FilePaths.DESCRIPTION.value).split("\n--");
+                descriptionString = descriptionVolatilityArr[0].strip();
+                volatilityString = descriptionVolatilityArr[1].strip();
+                metaDataString = MFile.fromPath(StockPage.getMetaDataPath()).strip();
+                latestStockString = MFile.fromPath(StockPage.getLatestStockPath()).strip();
             }
             catch (IOException ex)
             {
                 System.out.println(ex);
-                metaData = "";
-                latestStock = "";
+                descriptionString = "";
+                volatilityString = "";
+                metaDataString = "";
+                latestStockString = "";
                 return;
             }
 
-            if (metaData.equals("NONE") || latestStock.equals("NONE"))
+            if (metaDataString.equals("NONE") || latestStockString.equals("NONE"))
             {
                 new Warning("Invalid Stock Symbol");
+            }
+            else if (metaDataString.equals("EXCEEDED") || latestStockString.equals("EXCEEDED"))
+            {
+                new Warning("Exceeded API call limit of 5 calls per minute and 500 calls per day");
             }
             else
             {
                 Ssymbol.setText(symbol);
-                SvolumeVolatility.setText(metaData);
-                ScompanyInfo.setText(latestStock);
 
-                Sstock.setIcon(null);
-                Chart stockGraph = new Chart(StockPage.getStockGraphPath());
-                Image image = stockGraph.getImage();
-                Image scaledImage = image.getScaledInstance(Sstock.getWidth(), Sstock.getHeight(), java.awt.Image.SCALE_SMOOTH);
-                Sstock.setIcon(new ImageIcon(scaledImage));
+                ScompanyDescriptionInfo.setText(descriptionString);
+                ScompanyVolatilityInfo.setText(volatilityString);
+                SlatestInfo.setText(latestStockString);
+                SmetaDataInfo.setText(metaDataString);
+
+                resetStockGraph();
             }
             
+        }
+        else if (clickedButton == clearPortfolio)
+        {
+            System.out.println("Clear Portfolio");
+            mainPortfolio.clearPortfolio();
+            removePieChart(); // is lagging, requires page change to reflect pie chart removal
+            updatePortfolios();
+        }
+        else if (clickedButton == savePortfolio)
+        {
+            System.out.println("Save Portfolio");
+            mainPortfolio.savePortfolioToFile(FilePaths.PORTFOLIO.value);
+        }
+        else if (clickedButton == loadPortfolio)
+        {
+            System.out.println("Load Portfolio");
+            mainPortfolio.updateFromFile(FilePaths.PORTFOLIO.value);
+            pieChartGen();
+            updatePortfolios();
         }
         else if (clickedButton == tennisBall)
         {
             new Warning("Tennis Ball Feature Not Yet Available");
         }
-        else if (clickedButton == perlinNoise)
+        else if (clickedButton == standardMovingAverage)
         {
-            new Warning ("Perlin Noise Feature Not Yet Available");
+            int period = (int) warnAction(standardMovingAverageValue.getText(), (String s) -> Integer.valueOf(s), -1, "Invalid Number");
+            if (period <= 0)
+            {
+                return;
+            }
+            String[] pointsString;
+            try
+            {
+                pointsString = MFile.fromPath(FilePaths.POINTS.value).strip().split("\n");
+            }
+            catch (IOException ex)
+            {
+                System.out.println(ex);
+                return;
+            }
+            CmdExec.exec("py " + FilePaths.PYTHON.value + "retrieve.py %s symbol=\"%s\" iteration=\"%d\" s_close_x=\"%s\" s_close_y=\"%s\"", "sma", pointsString[0], period, pointsString[1], pointsString[2]);
+            resetStockGraph();
         }
     }
 
 
     /**
-     * 
-     * generateDimensions uses the screen width and height to produce proportional width and heigh parameters for the GUI
+     * Raises a new Warning if an exception is caught during the execution of the subprocess argument
+     * @param <T> (T) Return type
+     * @param <V> (V) Parameter type
+     * @param input (V) Subprocess parameter
+     * @param func (Function<V, T>) Subprocess to be executed with appropriate Parameter and Return types.
+     * @param altResult (T) Alternate result to be returned if exception arises. Must be of the same type as the Return type.
+     * @param warnMsg (String) Warning to be displayed on Warning GUI
+     * @return Result of the subprocess (if successful) or altResult (if Exception is caught)
+     */
+    public static <T, V> T warnAction(V input, Function<V, T> func, T altResult, String warnMsg)
+    {
+        T result;
+        try
+        {
+            result = func.apply(input);
+        }
+        catch (Exception ex)
+        {
+            new Warning(warnMsg);
+            System.out.println(ex);
+            result = altResult;
+        }
+        return result;
+    }
+
+
+    /**
+     * Uses the screen width and height to produce proportional width and heigh parameters for the GUI
+     * @return (int[]) Screen width and height - {width, height}
      */
     private static int[] generateDimensions()
     {
-        // Dimension sc = Toolkit.getDefaultToolkit().getScreenSize();
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int[] wh = {gd.getDisplayMode().getWidth() / 2, (int) (gd.getDisplayMode().getHeight() * 1.2) / 2};
         return wh;
-    }
-
-
-
-
-
-    // UTILS //
-
-    /**
-     * 
-     * @param s
-     * @param sep
-     * @return double array with all values separated by sep
-     */
-    public static double[] extract(String s, String sep)
-    {
-        int r1 = s.indexOf(sep);
-        int r2 = s.indexOf(sep, r1 + 1);
-        double[] k = {
-            Double.valueOf(s.substring(0, r1)),
-            Double.valueOf(s.substring(r1 + 1, r2)),
-            Double.valueOf(s.substring(r2 + 1, s.length()))
-        };
-        return k;
-    }
-
-    /**
-     * 
-     * @param arr String array
-     * @return double array
-     */
-    public static double[] stodArr(String[] arr)
-    {
-        arrprint(arr);
-        int n = arr.length;
-        double[] dArr = new double[n];
-        for (int i = 0; i < n; ++i)
-        {
-            dArr[i] = Double.valueOf(arr[i]);
-        }
-        arrprint(dArr);
-        return dArr;
-    }
-
-    /**
-     * 
-     * prints array
-     * @param arr String array
-     */
-    public static void arrprint(String[] arr)
-    {
-        for (String c: arr)
-        {
-            System.out.print(c + " ");
-        }
-        System.out.println();
-    }
-
-    /**
-     * 
-     * prints array
-     * @param arr double array
-     */
-    public static void arrprint(double[] arr)
-    {
-        for (double c: arr)
-        {
-            System.out.print(c + " ");
-        }
-        System.out.println();
     }
 }

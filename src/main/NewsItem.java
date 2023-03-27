@@ -1,12 +1,5 @@
-import utils.CmdExec;
-import utils.MFile;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
-// import java.io.InputStream;
-// import java.util.Scanner;
-
 
 
 
@@ -25,13 +18,11 @@ public class NewsItem
         this.content      =  content      ;
     }
 
-
     public String stringValue()
     {
         // return String.format("SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nPUBLISHEDATE: %s", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
         return String.format("SOURCENAME: %s \nAUTHOR: %s \nTITLE: %s \nDESCRIPTION: %s \nURL: %s \nURLTOIMAGE: %s \nPUBLISHEDATE: %s \nCONTENT: %s", sourceName, author, title,  description, url, urlToImage, publishedAt, content);
     }
-
 
     @Override
     public String toString()
@@ -41,25 +32,14 @@ public class NewsItem
 
 
 
-    
     public static void queryAPI()
     {
         // py Python/retrieve.py news category=[String, optional] country=[String, optional] pagesize=[String, optional] apikey=[String, optional]
-        String command = "py Python/retrieve.py news";
+        String command = "py " + FilePaths.PYTHON.value + "retrieve.py news";
 
         CmdExec.exec(command + "%s", "").getInputStream();
-
-        // InputStream c = CmdExec.exec(command + "%s", "").getInputStream();
-        
-        // Scanner s = new Scanner(c).useDelimiter("\\A");
-        // String result = s.hasNext() ? s.next() : "";
-        // s.close();
-
-        // System.out.println(result);
-
     }
-
-
+    
     public static NewsItem[] newsItemsFromFile(String path)
     {
         String data;

@@ -1,6 +1,7 @@
+import java.io.IOException;
 import java.util.HashMap;
 
-import utils.ArrayTools;
+
 
 public class Portfolio
 {
@@ -19,7 +20,7 @@ public class Portfolio
     {
         return portfolio.get(ticker);
     }
-
+    
     public int getSize()
     {
         return portfolio.size();
@@ -75,6 +76,54 @@ public class Portfolio
         }
     }
 
+    public void clearPortfolio()
+    {
+        portfolio.clear();
+    }
+
+    public void savePortfolioToFile(String path)
+    {
+        String portfolioContents = "ticker,count,industry";
+        String[] tickers = getAllStockTickers();
+        for (String ticker : tickers)
+        {
+            Stock tickerStock = portfolio.get(ticker);
+            portfolioContents += "-"; // separator
+            portfolioContents += tickerStock.getTicker() + ",";
+            portfolioContents += tickerStock.getCount() + ",";
+            portfolioContents += tickerStock.getIndustry();
+        }
+        MFile.toPath(path, portfolioContents);
+    }
+
+    public void updateFromFile(String path)
+    {
+        String data;
+        try
+        {
+            data = MFile.fromPath(path);
+        }
+        catch (IOException e)
+        {
+            System.out.println(e);
+            return;
+        }
+
+        clearPortfolio();
+
+        String[] pStocks = data.split("\n");
+        for (int i = 1; i < pStocks.length; ++i)
+        {
+            String[] pStockString = pStocks[i].split(",");
+            addStock(pStockString[0], new Stock(
+                pStockString[0],
+                pStockString[2],
+                Double.valueOf(pStockString[1])
+            ));
+        }
+    }
+
+
     public static HashMap<String, Number> countIndustry(Portfolio p)
     {
         p.removeZerosAndNegatives();
@@ -82,7 +131,7 @@ public class Portfolio
         HashMap<String, Number> industryStockValue = new HashMap<>();
         String[] pStocks = p.portfolio.keySet().toArray(new String[0]);
         String[] ks;
-        // String[] industries = new String[pStocks.length];
+
         for (int i = 0; i < pStocks.length; ++i)
         {
             Stock pStock = p.getStock(pStocks[i]);
