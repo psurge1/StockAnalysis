@@ -23,6 +23,4 @@ public enum FilePaths {
             c.value = absolutePath + c.value;
         }
     }
-
-
 }

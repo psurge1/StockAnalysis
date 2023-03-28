@@ -32,10 +32,3 @@ class paths:
         path_keys = paths.keys()
         for pkey in path_keys:
             paths.set(pkey, func(paths.value(pkey)))
-    # NEWS = "C:/Users/suraj/Code/StockAnalysis/storage/data/news.csv"
-    # STOCK = "C:/Users/suraj/Code/StockAnalysis/storage/data/lateststock.txt"
-    # METADATA = "C:/Users/suraj/Code/StockAnalysis/storage/data/metadata.txt"
-    # STOCKGRAPH = "C:/Users/suraj/Code/StockAnalysis/storage/stockgraph.png"
-    # DESCRIPTION = "C:/Users/suraj/Code/StockAnalysis/storage/data/description.txt"
-    # POINTS = "C:/Users/suraj/Code/StockAnalysis/storage/data/points.txt"
-    # DEBUGLOG = "C:/Users/suraj/Code/StockAnalysis/storage/debuglog.txt"
