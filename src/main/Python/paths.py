@@ -1,12 +1,16 @@
+import sys
+
+
+
 class paths:
     enum_dict: dict[str, any] = {
-        "NEWS": "C:/Users/suraj/Code/StockAnalysis/storage/data/news.csv",
-        "STOCK": "C:/Users/suraj/Code/StockAnalysis/storage/data/lateststock.txt",
-        "METADATA": "C:/Users/suraj/Code/StockAnalysis/storage/data/metadata.txt",
-        "STOCKGRAPH": "C:/Users/suraj/Code/StockAnalysis/storage/stockgraph.png",
-        "DESCRIPTION": "C:/Users/suraj/Code/StockAnalysis/storage/data/description.txt",
-        "POINTS": "C:/Users/suraj/Code/StockAnalysis/storage/data/points.txt",
-        "DEBUGLOG": "C:/Users/suraj/Code/StockAnalysis/storage/debuglog.txt",
+        "NEWS": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/data/news.csv",
+        "STOCK": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/data/lateststock.txt",
+        "METADATA": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/data/metadata.txt",
+        "STOCKGRAPH": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/stockgraph.png",
+        "DESCRIPTION": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/data/description.txt",
+        "POINTS": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/data/points.txt",
+        "DEBUGLOG": "C:/Users/suraj/Code/StockAnalysis/src/main/storage/debuglog.txt",
         "KEYS": "C:/Users/suraj/Code/StockAnalysis/src/main/assets/keys.txt"
     }
 
@@ -32,3 +36,8 @@ class paths:
         path_keys = paths.keys()
         for pkey in path_keys:
             paths.set(pkey, func(paths.value(pkey)))
+
+# if __name__ == '__main__':
+#     abs_path = "C:/Users/suraj/Code/StockAnalysis"
+#     # command_line_arguments = dict(sys.argv[1].split('='))
+#     # abs_path = dict["abs_path"]

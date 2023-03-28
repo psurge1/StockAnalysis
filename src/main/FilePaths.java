@@ -1,15 +1,15 @@
 public enum FilePaths {
-    NEWS("/storage/data/news.csv"),
-    LATESTSTOCK("/storage/data/lateststock.txt"),
-    METADATA("/storage/data/metadata.txt"),
-    STOCKGRAPH("/storage/stockgraph.png"),
-    PIECHART("/storage/diversitypie.png"),
-    LOGO("/storage/logo.png"),
-    DESCRIPTION("/storage/data/description.txt"),
-    PORTFOLIO("/storage/data/portfolio.csv"),
-    POINTS("/storage/data/points.txt"),
+    NEWS("/src/main/storage/data/news.csv"),
+    LATESTSTOCK("/src/main/storage/data/lateststock.txt"),
+    METADATA("/src/main/storage/data/metadata.txt"),
+    STOCKGRAPH("/src/main/storage/stockgraph.png"),
+    PIECHART("/src/main/storage/diversitypie.png"),
+    LOGO("/src/main/storage/logo.png"),
+    DESCRIPTION("/src/main/storage/data/description.txt"),
+    PORTFOLIO("/src/main/storage/data/portfolio.csv"),
+    POINTS("/src/main/storage/data/points.txt"),
     PYTHON("/src/main/Python/");
-
+    
     String value;
     FilePaths(String value)
     {

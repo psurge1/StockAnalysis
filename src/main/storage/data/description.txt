@@ -1,0 +1,17 @@
+1. symbol: TMO
+2. name: Thermo Fisher Scientific Inc
+3. type: Equity
+4. region: United States
+5. marketopen: 09:30
+6. marketclose: 16:00
+7. timezone: UTC-04
+8. currency: USD
+
+--
+Volatility
+beta (5day): 0.003633884785984426
+variance: 2.044822824351785e-05
+standard deviation: 0.00452197172077821
+
+Start Date: 2023-03-10 15:00:00
+End Date:  2023-03-27 18:00:00

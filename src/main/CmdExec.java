@@ -6,7 +6,7 @@ public class CmdExec {
     public static Process exec(String cmdAndFmt, Object ... args)
     {
         String s = String.format(cmdAndFmt, args);
-        if (!((String) args[0]).equals("sma"))
+        if (!(args[0] + "").equals("sma"))
         {
             System.out.println(s);
         }

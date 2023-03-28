@@ -221,6 +221,7 @@ public class Gui extends Element implements ActionListener, ItemListener
         {
             System.out.println(c.value);
         }
+        CmdExec.exec("py " + FilePaths.PYTHON.value + "paths.py abs_path=\"%s\"", absolutePath);
         
         // run GUI
         javax.swing.SwingUtilities.invokeLater(new Runnable()
