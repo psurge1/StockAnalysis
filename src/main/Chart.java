@@ -105,10 +105,10 @@ public class Chart extends ElementD
         }
         
         // EXAMPLE ARGS
-        // args = {"\"FROG\"=1.5", "\"HORSE\"=3.0", "\"DRAGONIAN BEAST\"=4.5", "\"LEOPARD FLYER\"=10"};
+        // args = {"\"FROG\"=1.5", "\"HORSE\"=3.0", "\"COW\"=4.5", "\"LEOPARD\"=10"};
         
         // EXAMPLE BASH COMMAND
-        // py Python/plot.py "../storage/diversitypie.png" FROG=1.5 HORSE=3.0 "DRAGONIAN BEAST"=4.5 "LEOPARD FLYER"=10
+        // py Python/plot.py "../storage/diversitypie.png" FROG=1.5 HORSE=3.0 "COW"=4.5 "LEOPARD"=10
 
         CmdExec.exec(cmd, args);
 
