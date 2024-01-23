@@ -9,4 +9,4 @@ GUI application that enables the end user to maintain a portfolio of stocks by i
 
 ### Native Dependencies
 - Python 3.9+ interpreter
-- Git Bash/MinGW (only required for systems with non-Unix-like operating systems)
+- Git Bash/MinGW or WSL (only required for systems with non-Unix-like operating systems)
