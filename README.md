@@ -47,15 +47,15 @@ The application is primarily written in Java but API interaction for news and st
 - Wrapper file containing a method to search for a String in a given String array.
 
 #### Python
-``api.py``
+```api.py```
 - Facilitates API requests using the `send_HTTP_request`, `get_stock_data`, `get_stock_info`, and `get_news_headlines` functions.
-``retrieve.py``
+```retrieve.py```
 - Contains methods to search for stock symbols, generate stock charts, and plot data analysis graphs like SMA.
-``data.py``
+```data.py```
 - Contains data analysis functions.
-``paths.py``
+```paths.py```
 - Contains daths to all csv, png, and txt files used for storing data.
-``plot.py``
+```plot.py```
 - Contains method to plot a portfolio industry diversity pie chart, and save it as a png.
-``py_utils.py``
+```py_utils.py```
 - Facilitates file I/0.
