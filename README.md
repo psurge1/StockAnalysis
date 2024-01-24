@@ -61,13 +61,18 @@ The application is primarily written in Java but API interaction for news and st
 #### Python
 ```api.py```
 - Facilitates API requests using the `send_HTTP_request`, `get_stock_data`, `get_stock_info`, and `get_news_headlines` functions.
+
 ```retrieve.py```
 - Contains methods to search for stock symbols, generate stock charts, and plot data analysis graphs like SMA.
+
 ```data.py```
 - Contains data analysis functions.
+
 ```paths.py```
 - Contains daths to all csv, png, and txt files used for storing data.
+
 ```plot.py```
 - Contains method to plot a portfolio industry diversity pie chart, and save it as a png.
+
 ```py_utils.py```
 - Facilitates file I/0.
